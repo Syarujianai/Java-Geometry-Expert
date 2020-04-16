@@ -94,7 +94,7 @@ public class gterm {
     }
 
     public int setAllpts(Pro_point[] pp) {
-        for (int i = 0; i < gpoints.size(); i++) {
+         for (int i = 0; i < gpoints.size(); i++) {
             Pro_point p = (Pro_point) gpoints.get(i);
             pp[i + 1] = p;
         }
@@ -411,7 +411,7 @@ public class gterm {
         int n = s.length();
         int index = 0;
         int num = 0;
-        int[] k = new int[4];
+        double[] k = new double[4];
 
         while (index < n) {
             String name = "";
@@ -456,7 +456,7 @@ public class gterm {
                     }
                     c = s.charAt(index);
 
-                } else if (c >= '0' && c <= '9') {
+                } else if (c >= '0' && c <= '9' || c == '.') {
                     s1 += c;
                     index++;
                     if (index >= n) {
@@ -465,7 +465,7 @@ public class gterm {
                     c = s.charAt(index);
 
                 } else {
-                    int x = Integer.parseInt(s1.trim());
+                    double x = Double.parseDouble(s1.trim());
                     k[dd] = x;
                     dd++;
                     s1 = "";

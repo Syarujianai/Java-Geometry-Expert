@@ -370,13 +370,13 @@ public class gib {
         for (int i = 0; i < RValue.length; i++)
             RValue[i] = true;
 
-//        RValue[R_RATIO - 1] = false;
+        // RValue[R_RATIO - 1] = false;
         RValue[R_AG_BISECTOR_ATIO - 1] = false;
         RValue[R_PARALLELOGRAM - 1] = false;
         RValue[R_PYTH_THM-1] = false;
-       // RValue[R_RATIO - 1] = false;
+        // RValue[R_RATIO - 1] = false;
         RValue[R_RA_ST_CT - 1] = false;
-        //      RValue[R_AA_STRI -1] = false;
+        // RValue[R_AA_STRI - 1] = false;
 
     }
 

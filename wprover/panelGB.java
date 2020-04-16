@@ -59,7 +59,7 @@ public class panelGB extends panelAlgebric implements MouseListener {
         main = new Thread(this, "GbProver");
         running = true;
         main.start();
-        startTimer();
+        startTimer();  // delay 1000
     }
 
     public void startTimer() {

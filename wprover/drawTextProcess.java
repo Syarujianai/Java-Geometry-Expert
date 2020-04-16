@@ -120,20 +120,21 @@ public class drawTextProcess extends drawProcess {
         for (int i = 0; i < n; i++) {
             CPoint p = (CPoint) pointlist.get(i);
             out.write(p.toString().getBytes());
-            int x = (int) p.getx();
-            int y = (int) p.gety();
+            double x = p.getx();
+            double y = p.gety();
             CText ct = p.getPText();
             Point p1 = ct.getLocation();
             if (p1 == null) {
-                out.write(("(" + x + "," + y + ")  ").getBytes());
+                out.write(("(" + String.format("%.15f", x) + "," +
+                        String.format("%.15f", y) + ")  ").getBytes());
             } else {
-                out.write(("(" + x).getBytes());
+                out.write(("(" + String.format("%.15f", x)).getBytes());
                 int tx = p1.x;
                 if (tx >= 0) {
                     out.write("+".getBytes());
                 }
                 out.write((new Integer(tx).toString() + "," +
-                        new Integer(y).toString()).getBytes());
+                        String.format("%.15f", y)).getBytes());
                 int ty = p1.y;
                 if (ty >= 0) {
                     out.write("+".getBytes());

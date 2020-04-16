@@ -101,7 +101,7 @@ public class Pro_point {
         this.y = y;
     }
 
-    public void setXY1(int x1, int y1) {
+    public void setXY1(double x1, double y1) {
         this.x1 = x1;
         this.y1 = y1;
     }

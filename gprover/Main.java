@@ -17,7 +17,8 @@ public class Main {
 
             String user_directory = System.getProperty("user.dir");
             String sp = System.getProperty("file.separator");
-            String dr = user_directory + sp + "ex";
+            // String dr = user_directory + sp + "ex";
+            String dr = user_directory + sp + "output\\examples\\Junior Mathematics\\";
             File file = new File(dr);
 
 
@@ -93,14 +94,18 @@ public class Main {
     }
 
     public static void main(String[] args) {
-        main1(args);
+        // main1(args);
+        proveFull();
     }
+
+
 
     static void proveFull() {
         try {
             String user_directory = System.getProperty("user.dir");
             String sp = System.getProperty("file.separator");
-            String dr = user_directory + sp + "ex";
+            // String dr = user_directory + sp + "ex";
+            String dr = user_directory + sp + "output\\examples\\Junior Mathematics\\";
             File file = new File(dr);
 
 
@@ -133,7 +138,7 @@ public class Main {
                 gterm gt = (gterm) vm.get(id);
                 full.setExample(gt);
                 full.sbase();
-                full.setNoPrint();
+                // full.setNoPrint();
 
                 if (id == 482) {
                     System.gc();
@@ -209,13 +214,15 @@ public class Main {
     }
 
     static void readThems(File file, Vector v) throws IOException {
-        File[] sf = file.listFiles(new FileFilter() {
-            public boolean accept(File pathname) {
-                String nm = pathname.getName();
-                return !(nm.contains("."));
-            }
+        assert file.exists();
+        File[] sf = file.listFiles();
+//        File[] sf = file.listFiles(new FileFilter() {
+//            public boolean accept(File pathname) {
+//                String nm = pathname.getName();
+//                return !(nm.contains("."));
+//            }
+//        });
 
-        });
         for (int i = 0; i < sf.length; i++) {
             if (sf[i].isDirectory())
                 readThems(sf[i], v);

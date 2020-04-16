@@ -28,7 +28,7 @@ public class PanelProve1 extends JTabbedPane implements ChangeListener {
     private JTree tree; // GDD
 
     private DefaultMutableTreeNode top_db;
-    private JTree tree_db; //Data  Base
+    private JTree tree_db; // Data  Base
 
     private DefaultMutableTreeNode top_full;
     private JTree tree_full; // Full Angle

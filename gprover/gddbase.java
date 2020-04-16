@@ -3260,8 +3260,8 @@ public class gddbase extends gib {
         cons_no = tm.getCons_no();
         cond tco = tm.getConc();
         setConc(tco);
-        tm.setAllpts(allpts);
-        cns_no = tm.setAllcons(allcns);
+        tm.setAllpts(allpts);  // set allpts
+        cns_no = tm.setAllcons(allcns);  // set allcns
         pts_no = tm.getPointsNum();
     }
 
