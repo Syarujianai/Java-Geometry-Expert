@@ -37,6 +37,7 @@ public class Main2 {
             // File file_1 = chooser.getSelectedFile();
             // gt.readAterm(new DataInputStream (new FileInputStream(chooser.getSelectedFile())));
             gt.readAterm(new BufferedReader(new FileReader(chooser.getSelectedFile())));
+            gib.initRulers();
             Prover.set_gterm(gt);
             // Prover.run();
             Boolean t = Prover.prove();
