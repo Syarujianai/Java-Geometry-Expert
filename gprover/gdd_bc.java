@@ -242,7 +242,7 @@ public class gdd_bc extends gdd_aux {
                     if ((pr3 = fd_pred(pr1)) != null) {
                         pr.addcond(pr3);
                     } else {
-                        do_pred(pr1);
+                        do_pred(pr1);  // update pr1.ustruct
 //                        if (pr_coll) {
 //                            if (!add_pr_coll(pr, pr1))
 //                                continue;
@@ -1631,7 +1631,7 @@ public class gdd_bc extends gdd_aux {
                 break;
             case CO_COLL:
                 if (co.p[0] != 0)
-                    co.u.ln = fo_ln(co.p, 7);
+                    co.u.ln = fo_ln(co.p, 7);  // p[7] != 0, and on line ln (from all_ln)
                 break;
             case CO_PARA:
                 if (co.p[0] != 0)

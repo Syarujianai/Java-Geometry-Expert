@@ -2444,7 +2444,7 @@ public class
 
     }
 
-    public void SelectFromAList(Vector v1, Vector v2, double x, double y) { // from v1 to v2
+    public void SelectFromAList(Vector v1, Vector v2, double x, double y) { // from v2 to v1
         for (int i = 0; i < v2.size(); i++) {
             CClass cc = (CClass) v2.get(i);
             if (cc.select(x, y)) {
@@ -5480,6 +5480,7 @@ public class
         CPoint pt = SmartAddPoint(x, y);
         return pt;
     }
+
 
     public void addPointToList(CPoint p) {
         if (p == null)
