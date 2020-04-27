@@ -24,25 +24,78 @@ public class Main2 {
         if(pr.nx != null)
             viz_proof(pr.nx, has_sd);
 
+        /* visualize proof */
+        int count_append = 0;
         StringBuilder builder = new StringBuilder();
-        for (int i = 0; i < pr.vlist.size(); i++) {
-            cond v = (cond) pr.vlist.get(i);
+        boolean encountered_lemma = false;
+        if((pr.sd.contains("∥")) && (pr.u.pn != null) && (pr.u.pn.lemma == 166))
+            encountered_lemma = true;
 
-            if (has_sd.containsKey(v.sd))
-                builder.append("又 ");
+        if(encountered_lemma){
+            String vertex = "", angle_intermediate = "", angle_known = "";
+            StringBuilder another_builder = new StringBuilder();
+            for (int i = pr.vlist.size()-1; i >= 0; i--){  // reverse
+                cond v = (cond) pr.vlist.get(i);
 
-            if(i == 0)
-                builder.append("\u2235 "+v.sd);
-            else
-                builder.append(", "+v.sd);
+                /* resolve proof step of lemma */
+                if(v.sd.contains("∥")) {
+                    String[] symbols = v.sd.split(" ∥ ");
+                    vertex = symbols[0].substring(1);  // store vertex B (of FB) firstly
+
+                }else if(v.sd.contains("∠")){
+                    String[] symbols = v.sd.split(" = ");
+                    angle_known = symbols[0];
+                    another_builder.append(symbols[1].substring(2, 4)).reverse();  // reverse: CD -> DC
+                    another_builder.append(vertex);
+                    angle_intermediate = another_builder.toString();
+                    another_builder.append("] = "+symbols[1]);  // DCB] = ∠[CDE]
+                    System.out.println("∴ ∠["  + another_builder.toString());  // print redundant proof step secondly
+                }
+
+                if (has_sd.containsKey(v.sd)){
+                    builder.append("又 ");
+                    continue;
+                }
+
+                if(count_append == 0){
+                    builder.append("∵ "+v.sd);
+                    /* resolve proof step of lemma */
+                    System.out.println(builder.toString());
+                    builder.setLength(0);
+                }else{
+                    if(count_append == 1){
+                        builder.append("又 ");
+                        builder.append("∵ "+v.sd+"\n");
+                        builder.append( "∴ " + angle_known + " = " + "∠[" + angle_intermediate);
+                    } else{
+                        builder.append(", "+v.sd);
+                    }
+                }
+                count_append += 1;
+            }
+        }else{
+            for (int i = 0; i < pr.vlist.size(); i++) {
+                cond v = (cond) pr.vlist.get(i);
+
+                if (has_sd.containsKey(v.sd)){
+                    builder.append("又 ");
+                    continue;
+                }
+
+                if(count_append == 0){
+                    builder.append("∵ "+v.sd);
+                }else{
+                    builder.append(", "+v.sd);
+                }
+                count_append += 1;
+            }
         }
+
         System.out.println(builder.toString());
 
         if (!has_sd.containsKey(pr.sd))
             has_sd.put(pr.sd, 1);
-        System.out.println("\u2234 "+pr.sd);
-//        if(pr.u.pn != null) && (pr.u.pn.lemma == 166){
-//        }
+        System.out.println("∴ "+pr.sd);
     }
 
     public static void main(String[] args) {

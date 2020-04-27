@@ -5481,7 +5481,6 @@ public class
         return pt;
     }
 
-
     public void addPointToList(CPoint p) {
         if (p == null)
             return;
