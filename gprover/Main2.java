@@ -25,9 +25,9 @@ public class Main2 {
             viz_proof(pr.nx, visited_pr_sd);
 
         /* visualize proof */
-        int count_append = 0;
+        int count_append = 0, count_skip = 0;
         StringBuilder builder = new StringBuilder();
-        boolean is_encounter_lemma = false, is_dup = false;
+        boolean is_encounter_lemma = false;
         if((pr.sd.contains("∥")) && (pr.u.pn != null) && (pr.u.pn.lemma == 166) && (pr.vlist.size() == 2))
             is_encounter_lemma = true;
 
@@ -161,7 +161,8 @@ public class Main2 {
                 cond v = (cond) pr.vlist.get(i);
 
                 if (visited_pr_sd.containsKey(v.sd)){
-                    is_dup = true;
+                    // 计算重复的条数是否等于vlist数
+                    count_skip += 1;
                     continue;
                 }
 
@@ -174,11 +175,14 @@ public class Main2 {
             }
         }
 
-        String pr_v  = builder.toString();
-        if(is_dup){
-            pr_v = "又 " + pr_v;
+
+        if((count_append != 0) && (count_append != count_skip)){
+            String pr_v  = builder.toString();
+            if(count_skip > 0){
+                pr_v = "又 " + pr_v;
+            }
+            System.out.println(pr_v);
         }
-        System.out.println(pr_v);
 
         if (!visited_pr_sd.containsKey(pr.sd))
             visited_pr_sd.put(pr.sd, 1);
