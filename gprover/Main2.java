@@ -7,22 +7,22 @@
  */
 package gprover;
 
-import com.sun.org.apache.xerces.internal.util.SynchronizedSymbolTable;
-import org.omg.CORBA.portable.InputStream;
-
 import javax.swing.*;
-import javax.swing.filechooser.FileFilter;
 import java.io.*;
-import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Set;
 
 
 public class Main2 {
-    public static void viz_proof(cond pr_head, Hashtable<String, Integer> visited_pr_sd){
+    public static void println_wrapper(String proof, StringBuilder outs, int out_mode){
+        System.out.println(proof);
+        if(out_mode == 1){
+            outs.append(proof+"\n");
+        }
+    }
+    public static void visualize_proof(cond pr_head, Hashtable<String, Integer> visited_pr_sd, int out_mode, StringBuilder outs){
         cond pr = pr_head;
         if(pr.nx != null)
-            viz_proof(pr.nx, visited_pr_sd);
+            visualize_proof(pr.nx, visited_pr_sd, out_mode, outs);
 
         /* visualize proof */
         int count_append = 0, count_skip = 0;
@@ -106,18 +106,18 @@ public class Main2 {
 
                         if(is_skip_para){
                             /* resolve proof step of lemma (after skipped parallel) */
-                            System.out.println("∴ ∠["  + another_builder.toString());
+                            println_wrapper("∴ ∠["  + another_builder.toString(), outs, out_mode);
 
-                            System.out.println(builder.toString());  // angle
+                            println_wrapper(builder.toString(), outs, out_mode);  // angle
                             builder.setLength(0);
 
-                            builder.append( "∴ " + angle_known + " = " + "∠[" + angle_intermediate + "]");  // final angles relationship
+                            builder.append("∴ " + angle_known + " = " + "∠[" + angle_intermediate + "]");  // final angles relationship
                         }else {
-                            System.out.println(builder.toString());  // parallel
+                            println_wrapper(builder.toString(), outs, out_mode);  // parallel
                             builder.setLength(0);
 
                             /* resolve proof step of lemma (after parallel) */
-                            System.out.println("∴ ∠["  + another_builder.toString());
+                            println_wrapper("∴ ∠["  + another_builder.toString(), outs, out_mode);
                         }
                     }else{
                         if(count_append == 1){
@@ -141,8 +141,8 @@ public class Main2 {
                     if(count_append == 0){
                         builder.append("∵ "+v.sd);
                         /* resolve proof step of lemma */
-                        System.out.println(builder.toString());
-                        System.out.println("∴ ∠["  + another_builder.toString());
+                        println_wrapper(builder.toString(), outs, out_mode);
+                        println_wrapper("∴ ∠["  + another_builder.toString(), outs, out_mode);
                         builder.setLength(0);
                     }else{
                         if(count_append == 1){
@@ -179,7 +179,7 @@ public class Main2 {
             if(count_skip > 0){
                 pr_v = "又 " + pr_v;
             }
-            System.out.println(pr_v);
+            println_wrapper(pr_v, outs, out_mode);
         }
 
 
@@ -190,10 +190,10 @@ public class Main2 {
         builder.append("∴ "+pr.sd);
         if(pr.rule == 31)
             builder.append(" (ASA)");
-        System.out.println(builder.toString());
+        println_wrapper(builder.toString(), outs, out_mode);
     }
 
-    public static void main(String[] args) {
+    public static String parse_and_prove_problem(int out_mode){
         String user_directory = System.getProperty("user.dir");
         String sp = System.getProperty("file.separator");
         // String dr = user_directory + sp + "ex";
@@ -201,24 +201,28 @@ public class Main2 {
         JFileChooser chooser = new JFileChooser();
         chooser.setCurrentDirectory(new File(dr));
         int result = chooser.showOpenDialog(null);
-        if (result == JFileChooser.CANCEL_OPTION) return;
+        if (result == JFileChooser.CANCEL_OPTION) return "Could not found files";
         gterm gt = new gterm();
+        StringBuilder outs = new StringBuilder();
         try {
             // gt.readAterm(new DataInputStream (new FileInputStream(chooser.getSelectedFile())));
             gt.readAterm(new BufferedReader(new FileReader(chooser.getSelectedFile())));
             gib.initRulers();
             Prover.set_gterm(gt);
-            Boolean t = Prover.prove();
-            System.out.println(t);
+            Boolean is_proved = Prover.prove();
+            System.out.println((is_proved? "proved: true":"proved: false"));
             cond pr_head = Prover.getProveHead();
 
             Hashtable<String, Integer> visited_pr_sd = new Hashtable<String, Integer>();
-            viz_proof(pr_head, visited_pr_sd);
-
-            System.out.println(t);
-
+            visualize_proof(pr_head, visited_pr_sd, out_mode, outs);
         } catch (IOException ee) {
         }
+
+        return outs.toString();
+    }
+
+    public static void main(String[] args) {
+        parse_and_prove_problem(0);
         //CMisc.print(Cm.s2077);
     }
 }

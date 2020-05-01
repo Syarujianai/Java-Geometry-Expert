@@ -350,7 +350,8 @@ public class gib {
     protected ratio_seg test_ra;
     static cond tm_pr1 = new cond();
     public static long depth = 0;
-    final protected static double ZERO = 0.001;
+    // final protected static double ZERO = 0.001;
+    final protected static double ZERO = 1e4;
     protected static boolean show_detail = false;
 
 
