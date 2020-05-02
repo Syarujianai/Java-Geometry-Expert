@@ -9,6 +9,7 @@ package gprover;
 
 import javax.swing.*;
 import java.io.*;
+import java.nio.Buffer;
 import java.util.Hashtable;
 
 
@@ -193,26 +194,70 @@ public class Main2 {
         println_wrapper(builder.toString(), outs, out_mode);
     }
 
-    public static String parse_and_prove_problem(int out_mode){
-        String user_directory = System.getProperty("user.dir");
+    public static String parse_and_prove_problem(int problem_id, int out_mode){
+
+//        String user_directory = System.getProperty("user.dir");
+//        String user_directory = "C:\\Users\\DM\\Desktop\\code\\geo\\Java-Geometry-Expert\\output\examples\";
+        String user_directory = "C:\\Users\\DM\\Desktop";
         String sp = System.getProperty("file.separator");
-        // String dr = user_directory + sp + "ex";
-        String dr = user_directory + sp + "output\\examples\\Junior Mathematics\\";
-        JFileChooser chooser = new JFileChooser();
-        chooser.setCurrentDirectory(new File(dr));
-        int result = chooser.showOpenDialog(null);
-        if (result == JFileChooser.CANCEL_OPTION) return "Could not found files";
+        String dr = user_directory + sp + "Junior Mathematics\\";
+        String dr_file = dr + String.format("example_%d.txt", problem_id);
+        String dr_ex_file = dr + String.format("positions_%d.txt", problem_id);
+        String dr_compound_file = dr + String.format("combined_%d.txt", problem_id);
+        File file = new File(dr_file);
+        File ex_file = new File(dr_ex_file);
+        File compound_file = new File(dr_compound_file);
+
+        /* preproccessing */
+        try {
+            if (!file.exists()) return "Files could not be found";
+            else {
+                if (ex_file.exists() && !compound_file.exists()) {
+                    /* combine files */
+                    BufferedWriter bw = new BufferedWriter(new FileWriter(compound_file));
+                    BufferedReader br_1 = new BufferedReader(new FileReader(file));
+                    BufferedReader br_2 = new BufferedReader(new FileReader(ex_file));
+                    String line;
+                    while ((line = br_1.readLine()) != null) {
+                        bw.write(line);
+                        bw.newLine();
+                    }
+                    while ((line = br_2.readLine()) != null) {
+                        bw.write(line);
+                        bw.newLine();
+                    }
+                    bw.flush();
+                    bw.close();
+                }
+            }
+        } catch (IOException ee){
+        }
+//        JFileChooser chooser = new JFileChooser();
+//        chooser.setCurrentDirectory(new File(dr));
+//        int result = chooser.showOpenDialog(null);
+//        if (result == JFileChooser.CANCEL_OPTION) return "Files could not be found";
         gterm gt = new gterm();
         StringBuilder outs = new StringBuilder();
+
+        /* read gterm, prove and visualize */
         try {
+            /* read gterm */
             // gt.readAterm(new DataInputStream (new FileInputStream(chooser.getSelectedFile())));
-            gt.readAterm(new BufferedReader(new FileReader(chooser.getSelectedFile())));
+            // gt.readAterm(new BufferedReader(new FileReader(chooser.getSelectedFile())));
+            if(compound_file.exists()){
+                gt.readAterm(new BufferedReader(new FileReader(compound_file)));
+            }else{
+                gt.readAterm(new BufferedReader(new FileReader(file)));
+            }
+
+            /* prove */
             gib.initRulers();
             Prover.set_gterm(gt);
             Boolean is_proved = Prover.prove();
             System.out.println((is_proved? "proved: true":"proved: false"));
-            cond pr_head = Prover.getProveHead();
 
+            /* visualize proof steps */
+            cond pr_head = Prover.getProveHead();
             Hashtable<String, Integer> visited_pr_sd = new Hashtable<String, Integer>();
             visualize_proof(pr_head, visited_pr_sd, out_mode, outs);
         } catch (IOException ee) {
@@ -222,7 +267,7 @@ public class Main2 {
     }
 
     public static void main(String[] args) {
-        parse_and_prove_problem(0);
+        parse_and_prove_problem(1, 0);
         //CMisc.print(Cm.s2077);
     }
 }
