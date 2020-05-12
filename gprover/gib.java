@@ -352,6 +352,11 @@ public class gib {
     public static long depth = 0;
     // final protected static double ZERO = 0.001;
     final protected static double ZERO = 1e4;
+    // final protected static double ZERO = 1e7;
+    final protected static double ZERO_TRUE = 1e4;
+    final protected static double ZERO_PRO = 1e8;
+    final protected static double ZERO_COLL = 1.8e3;
+    // final protected static double ZERO_PRO = 2e5;
     protected static boolean show_detail = false;
 
 
@@ -1205,8 +1210,12 @@ public class gib {
     }
 
     final boolean check_coll(int p1, int p2, int p3) {
+//        System.out.print("coll");
+//        System.out.printf("(x1:%f, y1:%f), (x2:%f, y2:%f), (x3:%f, y3:%f)", aptx(p1), apty(p1), aptx(p2), apty(p2), aptx(p3), apty(p3));
+//        System.out.println(Math.abs((apty(p2) - apty(p1)) * (aptx(p3) - aptx(p1)) -
+//                (aptx(p2) - aptx(p1)) * (apty(p3) - apty(p1))) < ZERO_COLL);
         return Math.abs((apty(p2) - apty(p1)) * (aptx(p3) - aptx(p1)) -
-                (aptx(p2) - aptx(p1)) * (apty(p3) - apty(p1))) < ZERO;
+                (aptx(p2) - aptx(p1)) * (apty(p3) - apty(p1))) < ZERO_COLL;
     }
 
     final boolean check_coll(int p1, int p2, int p3, int p4) {
@@ -1218,13 +1227,19 @@ public class gib {
     }
 
     final boolean check_para(int p1, int p2, int p3, int p4) {
+//        System.out.print(("para"));
+//        System.out.println(Math.abs((apty(p2) - apty(p1)) * (aptx(p4) - aptx(p3)) -
+//                (aptx(p2) - aptx(p1)) * (apty(p4) - apty(p3))) < ZERO_PRO);
         return Math.abs((apty(p2) - apty(p1)) * (aptx(p4) - aptx(p3)) -
-                (aptx(p2) - aptx(p1)) * (apty(p4) - apty(p3))) < ZERO;
+                (aptx(p2) - aptx(p1)) * (apty(p4) - apty(p3))) < ZERO_PRO;
     }
 
     final boolean check_perp(int p1, int p2, int p3, int p4) {
+//        System.out.print("perp");
+//        System.out.println(Math.abs((apty(p2) - apty(p1)) * (apty(p4) - apty(p3)) + (aptx(p4) - aptx(p3)) *
+//                (aptx(p2) - aptx(p1))) < ZERO_PRO);
         return Math.abs((apty(p2) - apty(p1)) * (apty(p4) - apty(p3)) + (aptx(p4) - aptx(p3)) *
-                (aptx(p2) - aptx(p1))) < ZERO;
+                (aptx(p2) - aptx(p1))) < ZERO_PRO;
     }
 
     protected boolean check_eqangle(int p1, int p2, int p3, int p4, int p5, int p6) {
@@ -1232,7 +1247,7 @@ public class gib {
             Cm.print("null point in eqangle");
             return false;
         }
-        return Math.abs(getAngleValue(p1, p2, p2, p3) - getAngleValue(p4, p5, p5, p6)) < ZERO;
+        return Math.abs(getAngleValue(p1, p2, p2, p3) - getAngleValue(p4, p5, p5, p6)) < ZERO_TRUE;
     }
 
     protected boolean check_atn(int p1, int p2, int p3, int p4, int p5, int p6) {
@@ -1331,7 +1346,9 @@ public class gib {
     }
 
     protected boolean check_ratio(int a, int b, int c, int d, int p, int q, int r, int s) {
-        return Math.abs(length2(a, b) * length2(r, s) - length2(c, d) * length2(p, q)) < ZERO;
+//        System.out.print("ratio");
+//        System.out.println(Math.abs(length2(a, b) * length2(r, s) - length2(c, d) * length2(p, q))< ZERO_PRO);
+        return Math.abs(length2(a, b) * length2(r, s) - length2(c, d) * length2(p, q)) < ZERO_PRO;
     }
 
     public boolean ck_4peq(int p1, int p2, int p3, int p4) {
@@ -1451,7 +1468,7 @@ public class gib {
         double r2 = getRatio(p1, p3, p4, p6);
         double r3 = getRatio(p2, p3, p5, p6);
 
-        return (Math.abs(r1 - r2) < ZERO) && (Math.abs(r1 - r3) < ZERO);
+        return (Math.abs(r1 - r2) < ZERO_TRUE) && (Math.abs(r1 - r3) < ZERO_TRUE);
     }
 
     boolean check_congtri(int p1, int p2, int p3, int p4, int p5, int p6) {

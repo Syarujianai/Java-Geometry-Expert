@@ -15,9 +15,10 @@ import java.util.Hashtable;
 
 public class Main2 {
     public static void println_wrapper(String proof, StringBuilder outs, int out_mode){
-        System.out.println(proof);
         if(out_mode == 1){
             outs.append(proof+"\n");
+        }else {
+            System.out.println(proof);
         }
     }
     public static void visualize_proof(cond pr_head, Hashtable<String, Integer> visited_pr_sd, int out_mode, StringBuilder outs){
@@ -267,7 +268,7 @@ public class Main2 {
     }
 
     public static void main(String[] args) {
-        parse_and_prove_problem(1, 0);
+        parse_and_prove_problem(6, 0);
         //CMisc.print(Cm.s2077);
     }
 }
