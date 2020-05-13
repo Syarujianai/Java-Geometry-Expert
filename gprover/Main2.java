@@ -176,7 +176,7 @@ public class Main2 {
             }
         }
 
-        if((count_append != 0) && (count_append != count_skip)){
+        if(count_append != 0){
             String pr_v  = builder.toString();
             if(count_skip > 0){
                 pr_v = "又 " + pr_v;
@@ -255,7 +255,7 @@ public class Main2 {
             gib.initRulers();
             Prover.set_gterm(gt);
             Boolean is_proved = Prover.prove();
-            System.out.println((is_proved? "proved: true":"proved: false"));
+            System.out.println((is_proved? "proved: true": "proved: false"));
 
             /* visualize proof steps */
             cond pr_head = Prover.getProveHead();
