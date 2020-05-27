@@ -8,6 +8,8 @@
 package gprover;
 
 
+import java.util.Vector;
+
 public class gdd extends gddbase {
 
     void fixpoint() {
@@ -2092,8 +2094,6 @@ public class gdd extends gddbase {
 
 
     final public void search_tn_st(int p1, l_line ln1, l_line ln2, t_line tn1) {
-
-
         t_line tn = all_tn.nx;
         while (tn != null && ch_dep(tn.dep)) {
             if (true) {
@@ -2117,7 +2117,6 @@ public class gdd extends gddbase {
                                                     int t4 = ln4.pt[m];
                                                     if (t1 != 0 && t2 != 0 && t3 != 0 && t4 != 0 && !same_tri(p1, t1, t2, p2, t3, t4)) {
                                                         if (xcong(t1, t2, t3, t4) && !xcon_tri(p1, t1, t2, p2, t3, t4)) {
-
 
                                                             if (xcong(p1, t1, p2, t3))
                                                                 add_codb(CO_CONG, p1, t1, p2, t3, 0, 0, 0, 0);
@@ -3443,8 +3442,16 @@ public class gdd extends gddbase {
         int p1, p2, p;
         p = inter_lls(l1, l2);
 
-        l_line ln;
+        /* store correspond line */
+        Vector<l_line> l_inter = new Vector<l_line>();
+        for (l_line l = all_ln.nx; l != null; l = l.nx) {
+            if (xcoll_ln(l, l1) || xcoll_ln(l, l2))
+                continue;
+            if (on_ln(p, l))
+                l_inter.add(l);
+        }
 
+        l_line ln;
         for (int t1 = 0; t1 <= l1.no; t1++)
             for (int t2 = 0; t2 <= l2.no; t2++) {
                 p1 = l1.pt[t1];
@@ -3462,7 +3469,13 @@ public class gdd extends gddbase {
                                 for (int k = 0; k < ls2.length; k++) {
                                     if (check_llatn(p1, p2, ls1[j], ls[i], xs[l], ls2[k])) {
                                         add_codb(CO_PERP, get_lpt1(ls1[j], p1), p1, p2, get_lpt1(ls2[k], p2), 0, 0, 0, 0);
-                                        add_atn(0, ls1[j], ls[i], xs[l], ls2[k]);
+                                        add_atn(0, ls1[j], ls[i], xs[l], ls2[k]);  // interior angle
+                                        for (int m = 0; m < l_inter.size(); m++) {  // right angle
+                                            l_line li = l_inter.get(m);
+                                            l_line[] lis = split_ln(p, li);
+                                            for (int n = 0; n < lis.length; n++)
+                                                add_atn(0, ls1[j], lis[n], lis[n], ls2[k]);
+                                        }
                                         pop_codb();
                                     }
                                 }
@@ -3471,15 +3484,58 @@ public class gdd extends gddbase {
     }
 
     public void search_atn(angtn atn) {
-
         if (atn.type == 0) return;
 
         adj_atn(atn);
         search_atn_atn(atn);
         search_atn_as(atn);
         search_atn_at(atn);
+        search_atn_tn(atn);
     }
 
+    public void search_atn_tn(angtn atn) {
+        // only interior angles of triangle
+        int p1, p2, p3;
+        l_line ln1, ln2, ln3, ln4;
+        ln1 = ln2 = ln3 = ln4 = null;
+        if (xcoll_ln(atn.ln2, atn.ln3)){
+            ln1 = atn.ln1;
+            ln2 = atn.ln2;
+            ln3 = atn.ln3;
+            ln4 = atn.ln4;
+        } else if (xcoll_ln(atn.ln2, atn.ln4)) {
+            ln1 = atn.ln1;
+            ln2 = atn.ln2;
+            ln3 = atn.ln4;
+            ln4 = atn.ln3;
+        } else if (xcoll_ln(atn.ln1, atn.ln3)) {
+            ln1 = atn.ln2;
+            ln2 = atn.ln1;
+            ln3 = atn.ln3;
+            ln4 = atn.ln4;
+        } else if (xcoll_ln(atn.ln1, atn.ln4)) {
+            ln1 = atn.ln2;
+            ln2 = atn.ln1;
+            ln3 = atn.ln4;
+            ln4 = atn.ln3;
+        }
+        if (ln1 == null) return;
+        p1 = inter_ll(ln1, ln2);
+        p2 = inter_ll(ln3, ln4);
+        p3 = inter_ll(ln1, ln4);
+        if(p1 != 0 && p2 != 0 && p3 != 0){
+            if (p1 == p2 && p1 == p3 && p2 == p3)  // combinatorial amgle
+                if (!check_perp(p1, get_lpt1(ln1, p1), p1, get_lpt1(ln4, p1)))
+                    return;
+            else if (p1 != p2 && p1 != p3 && p2 != p3)  // interior angle
+                if (!check_perp(p3, p1, p3, p2))
+                    return;
+            co_xy.nx = null;
+            cond co = add_coxy(CO_ATNG);
+            co.u.atn = atn;
+            add_tx(0, ln1, ln4);
+        }
+    }
 
     public void search_atn_atn(angtn atn) {
         angtn a1 = all_atn.nx;
@@ -3544,7 +3600,6 @@ public class gdd extends gddbase {
 
     public void search_as_atn(angles as) {
         angtn a1 = all_atn.nx;
-
         while (a1 != null && ch_dep(a1.dep)) {
             if (a1.type == 0) {
                 a1 = a1.nx;
@@ -3643,6 +3698,7 @@ public class gdd extends gddbase {
                             co.u.as = new angles(ls3[i], ls4[j], s3, s4);
                             a1.co = co;
                         }
+
                     }
                 }
         }
@@ -3746,6 +3802,16 @@ public class gdd extends gddbase {
         double r2 = getAngleValue(n3, p2, n4);
 
         if (Math.abs(Math.abs(r1) + Math.abs(r2) - Math.PI / 2) < ZERO) return true;
+        return false;
+    }
+
+
+    public boolean check_atn(int p1, int p2, int p3, int p4, int p5, int p6) {
+        double r1 = getAngleValue(p1, p2, p3);
+        double r2 = getAngleValue(p4, p5, p6);
+        if (r1 > 0 && r1 > 0 || r1 < 0 && r2 < 0)
+            if (Math.abs(Math.abs(r1) + Math.abs(r2) - Math.PI / 2) < ZERO) return true;
+
         return false;
     }
 

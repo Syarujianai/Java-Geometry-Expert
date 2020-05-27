@@ -62,7 +62,8 @@ public class CST {
                     "ON_SCIRCLE",
                     "ON_BALINE",
                     "ON_DCIRCLE",
-                    "EQANGLE3P"
+                    "EQANGLE3P",
+                    "COMPL_ANGLE"
             };
 
 

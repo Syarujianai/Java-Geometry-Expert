@@ -71,6 +71,7 @@ public class gib {
     final public static int C_O_AB = 48;
     final public static int C_O_D = 49;
     final public static int C_EQANGLE3P = 50;
+    final public static int C_COMPL_ANGLE = 51;
 
 
     final public static int C_ICENT1 = 199;
@@ -351,12 +352,10 @@ public class gib {
     static cond tm_pr1 = new cond();
     public static long depth = 0;
     // final protected static double ZERO = 0.001;
-    final protected static double ZERO = 1e4;
-    // final protected static double ZERO = 1e7;
-    final protected static double ZERO_TRUE = 1e4;
+    final protected static double ZERO = 0.1;
+    final protected static double ZERO_TRUE = 1e1;
     final protected static double ZERO_PRO = 1e8;
-    final protected static double ZERO_COLL = 1.8e3;
-    // final protected static double ZERO_PRO = 2e5;
+    final protected static double ZERO_COLL = 0.5e4;
     protected static boolean show_detail = false;
 
 

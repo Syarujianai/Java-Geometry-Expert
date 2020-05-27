@@ -524,6 +524,17 @@ public class gdd_bc extends gdd_aux {
         int lm = PLM(pr);
 
         switch (lm) {
+            case 0: {
+                angtn atn = pr1.u.atn;
+                l_line ln1, ln2, ln3, ln4;
+                ln1 = atn.ln1;
+                ln2 = atn.ln2;
+                ln3 = atn.ln3;
+                ln4 = atn.ln4;
+                cond c = add_pred(0, CO_ATNG, ln1.pt[0], ln1.pt[1], ln2.pt[0], ln2.pt[1], ln3.pt[0], ln3.pt[1], ln4.pt[0], ln4.pt[1]);
+                pr.addcond(c);
+            }
+            break;
             case 401: {
                 t_line tn = pr1.u.tn;
                 l_line ln1 = tn.l1;

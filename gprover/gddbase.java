@@ -2456,8 +2456,6 @@ public class gddbase extends gib {
     }
 
     final void adj_as_plus(l_line l1, l_line l2, l_line l3, l_line l4, angles r1) {
-
-
         l_line t1, t2, ln1, ln2, ln3, ln4;
         ln1 = ln2 = ln3 = ln4 = null;
 
@@ -3492,6 +3490,9 @@ public class gddbase extends gib {
                 break;
             case C_LC_TANGENT:
                 add_tline(0, p[0], p[1], p[1], p[2]);
+                break;
+            case C_COMPL_ANGLE:
+                add_atn(0, p[0], p[1], p[2], p[3], p[4], p[5]);
                 break;
 
             case CO_CONG:
@@ -5149,7 +5150,7 @@ public class gddbase extends gib {
     }
 
     public angtn add_atn(int lemma, l_line l1, l_line l2, l_line l3, l_line l4) {
-        if (isPFull()) return null;
+        // if (isPFull()) return null;
         if (!valid(R_AG_ATN)) return null;
         if (!valid(lemma)) return null;
 
@@ -5189,14 +5190,8 @@ public class gddbase extends gib {
             break;
         }
         if (l1 == l3 && l2 == l4 || l1 == l2 || l3 == l4) return null;
-        if (!check_atn(get_lpt1(l1, p1), p1, get_lpt1(l2, p1), get_lpt1(l3, p2), p2, get_lpt1(l4, p2))) {
-            int l = 0;
-        }
-
         if (fo_atn(l1, l2, l3, l4) != null) return null;
 
-//        if (true)
-//          return null;
         angtn atn = new angtn();
         atn.lemma = lemma;
         atn.ln1 = l1;
@@ -5218,12 +5213,21 @@ public class gddbase extends gib {
         double t1 = getAngleValue(a, b, c);
         double t2 = getAngleValue(a1, b1, c1);
         double t = t1 + t2;
-        if (Math.abs(t - Math.PI / 2) < ZERO) return 0; //positive
-        if (Math.abs(t + Math.PI / 2) < ZERO) return 1; //negtive
-        if (Math.abs(t1 - t2 - Math.PI / 2) < ZERO) return 2; //negtive
-        if (Math.abs(t1 - t2 + Math.PI / 2) < ZERO) return 3; //negtive
+
+        boolean identical = false;
+        if (t1 > 0 && t2 > 0 || t1 < 0 && t2 < 0)
+            identical = true;
+
+        if (identical) {
+            if (Math.abs(t - Math.PI / 2) < ZERO) return 0; //positive
+            if (Math.abs(t + Math.PI / 2) < ZERO) return 1; //negtive
+        } else{
+            if (Math.abs(t1 - t2 - Math.PI / 2) < ZERO) return 2; //negtive
+            if (Math.abs(t1 - t2 + Math.PI / 2) < ZERO) return 3; //negtive
+        }
         return -1; // false
     }
+
 
 
     /////////////////////////////////////////////////////////////////

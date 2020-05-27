@@ -21,6 +21,7 @@ public class Main2 {
             System.out.println(proof);
         }
     }
+
     public static void visualize_proof(cond pr_head, Hashtable<String, Integer> visited_pr_sd, int out_mode, StringBuilder outs){
         cond pr = pr_head;
         if(pr.nx != null)
@@ -268,7 +269,7 @@ public class Main2 {
     }
 
     public static void main(String[] args) {
-        parse_and_prove_problem(6, 0);
+        parse_and_prove_problem(21, 0);  // 21
         //CMisc.print(Cm.s2077);
     }
 }
