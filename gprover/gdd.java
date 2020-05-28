@@ -3494,7 +3494,7 @@ public class gdd extends gddbase {
     }
 
     public void search_atn_tn(angtn atn) {
-        // only interior angles of triangle
+        // only for interior angles of triangle
         int p1, p2, p3;
         l_line ln1, ln2, ln3, ln4;
         ln1 = ln2 = ln3 = ln4 = null;
@@ -3533,6 +3533,8 @@ public class gdd extends gddbase {
             co_xy.nx = null;
             cond co = add_coxy(CO_ATNG);
             co.u.atn = atn;
+            ln1 = fd_ln(ln1.pt[0], ln1.pt[1]);  // find complete line in `all_ln` by splitted one
+            ln4 = fd_ln(ln4.pt[0], ln4.pt[1]);
             add_tx(0, ln1, ln4);
         }
     }
@@ -3739,56 +3741,6 @@ public class gdd extends gddbase {
                 at1.co = co;
             }
         }
-    }
-
-    public boolean ptdr(int p, int o, int o1) {
-        return (x_inside(p, o, o1) || x_inside(o1, p, o));
-    }
-
-    l_line[] split_ln(int p, l_line ln) {
-        int o1 = get_lpt1(ln, p);
-        int o2 = get_anti_pt(ln, p, o1);
-
-        l_line lx1 = fadd_ln_t(p, o1);
-        l_line lx2 = fadd_ln_t(p, o2);
-        for (int i = 0; i <= ln.no; i++) {
-            int n = ln.pt[i];
-            if (n != 0 && n != p) {
-                if (o1 != 0 && n != o1 && ptdr(n, p, o1)) {
-                    l_line l1 = fd_ln_lp(lx1, n);
-                    if (l1 == null) {
-                        lx1 = cp_ln(lx1);
-                        lx1.type = 0;
-                        add_pt2l(n, lx1);
-                    } else
-                        lx1 = l1;
-                } else if (o2 != 0 && n != o2 && ptdr(n, p, o2)) {
-                    l_line l2 = fd_ln_lp(lx2, n);
-                    if (l2 == null) {
-                        lx2 = cp_ln(lx2);
-                        lx2.type = 0;
-                        add_pt2l(n, lx2);
-                    } else
-                        lx2 = l2;
-                }
-            }
-        }
-        l_line ls[];
-
-
-        if (lx1 == null && lx2 == null) return null;
-        if (lx1 != null && lx2 != null) {
-            ls = new l_line[2];
-            ls[0] = lx1;
-            ls[1] = lx2;
-            return ls;
-        }
-        ls = new l_line[1];
-        if (lx1 != null)
-            ls[0] = lx1;
-        else if (lx2 != null)
-            ls[0] = lx2;
-        return ls;
     }
 
 

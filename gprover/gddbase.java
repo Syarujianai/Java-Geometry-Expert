@@ -2354,6 +2354,7 @@ public class gddbase extends gib {
         adj_as_plus(tn2.l1, tn2.l2, tn1.l2, tn1.l1, as);
     }
 
+
     final void adj_bisector(l_line l1, l_line l2, l_line l3, l_line l4, angles r1, angles r2) {
         l_line ln1, ln2, ln3, ln4, ln5, ln6;
         if (l2 == l3) {
@@ -2456,6 +2457,15 @@ public class gddbase extends gib {
     }
 
     final void adj_as_plus(l_line l1, l_line l2, l_line l3, l_line l4, angles r1) {
+        angles as = null;
+        t_line tn = null;
+
+        co_xy.nx = null;
+        cond co = add_coxy(CO_ACONG);
+        co.u.as = new angles(l1, l2, l3, l4);
+        co = add_coxy(CO_ACONG);
+        co.u.as = r1;
+
         l_line t1, t2, ln1, ln2, ln3, ln4;
         ln1 = ln2 = ln3 = ln4 = null;
 
@@ -2501,52 +2511,58 @@ public class gddbase extends gib {
             }
         }
         if (t1 == null || t2 == null) return;
-
         if (ln1 == ln3 && ln2 == ln4) return;
-
 
         int m1 = inter_lls(ln1, t1);
         int m2 = inter_lls(t1, ln2);
         int m3 = inter_lls(ln1, ln2);
-
         int p1 = inter_lls(ln3, t2);
         int p2 = inter_lls(t2, ln4);
         int p3 = inter_lls(ln3, ln4);
         if (p1 == 0 || p2 == 0 || p3 == 0 || m1 == 0 || m2 == 0 || m3 == 0)
             return;
 
-        if (m1 != m2 && m1 != m3 && m3 != m2) {
-            ln1 = fadd_ln_t(m1, m3);
-            ln2 = fadd_ln_t(m2, m3);
+        if ((m1 != m2 && m1 != m3 && m3 != m2) && (p1 == p2 && p2== p3)) {
+            l_line[] ls1 = split_ln(m3, ln1);
+            l_line[] ls2 = split_ln(m3, ln2);
+            l_line[] ls3 = split_ln(p1, ln3);
+            l_line[] ls4 = split_ln(p1, ln4);
+            for (int i = 0; i < ls1.length; i++)
+                for (int j = 0; j < ls2.length; j++)
+                    for (int k = 0; k < ls3.length; k++)
+                        for (int l = 0; l < ls4.length; l++)
+                            if (check_eqangle_t(get_lpt1(ls1[i],m3), m3, get_lpt1(ls2[j],m3), m3,
+                                    get_lpt1(ls3[k],p1), p1, get_lpt1(ls4[l],p1), p1)) {
+                                ln1 = ls1[i]; ln2 = ls2[j]; ln3 = ls3[k]; ln4 = ls4[l];
+                                as = add_ea_ln(183, ls1[i], ls2[j], ls3[k], ls4[l]);
+                                if (as != null)
+                                    as.co = co_xy.nx;
+                            }
+
+        } else {
+            if (m1 != m2 && m1 != m3 && m3 != m2) {
+                ln1 = fadd_ln_t(m1, m3);
+                ln2 = fadd_ln_t(m2, m3);
+            }
+            if (p1 != p2 && p1 != p3 && p2 != p3) {
+                ln3 = fadd_ln_t(p1, p3);
+                ln4 = fadd_ln_t(p2, p3);
+            }
         }
-        if (p1 != p2 && p1 != p3 && p2 != p3) {
-            ln3 = fadd_ln_t(p1, p3);
-            ln4 = fadd_ln_t(p2, p3);
-        }
+
         if (ln1 == ln2 || ln3 == ln4) return;
-
-        t_line tn = null;
-        angles as = null;
         if (xcoll_ln(ln1, ln2) || xcoll_ln(ln3, ln4)) return;
-
         if (ln1 == ln4 && ln2 == ln3) {
             if (!check_para(ln1, ln2))
                 tn = add_tline(142, ln1, ln2);
-        } else
-            as = add_ea_ln(183, ln1, ln2, ln3, ln4);
-
-        if (tn != null || as != null) {
-            co_xy.nx = null;
-            cond co = add_coxy(CO_ACONG);
-            co.u.as = new angles(l1, l2, l3, l4);
-            co = add_coxy(CO_ACONG);
-            co.u.as = r1;
             if (tn != null)
                 tn.co = co_xy.nx;
+        } else {
+            if (!((m1 != m2 && m1 != m3 && m3 != m2) && (p1 == p2 && p2== p3)))
+                as = add_ea_ln(183, ln1, ln2, ln3, ln4);
             if (as != null)
                 as.co = co_xy.nx;
         }
-
     }
 
     public l_line get_82l0(l_line l1, l_line l2, l_line l3, l_line l4) {
@@ -4386,6 +4402,56 @@ public class gddbase extends gib {
         return null;
     }
 
+    public boolean ptdr(int p, int o, int o1) {
+        return (x_inside(p, o, o1) || x_inside(o1, p, o));
+    }
+
+    l_line[] split_ln(int p, l_line ln) {
+        int o1 = get_lpt1(ln, p);
+        int o2 = get_anti_pt(ln, p, o1);
+
+        l_line lx1 = fadd_ln_t(p, o1);
+        l_line lx2 = fadd_ln_t(p, o2);
+        for (int i = 0; i <= ln.no; i++) {
+            int n = ln.pt[i];
+            if (n != 0 && n != p) {
+                if (o1 != 0 && n != o1 && ptdr(n, p, o1)) {
+                    l_line l1 = fd_ln_lp(lx1, n);
+                    if (l1 == null) {
+                        lx1 = cp_ln(lx1);
+                        lx1.type = 0;
+                        add_pt2l(n, lx1);
+                    } else
+                        lx1 = l1;
+                } else if (o2 != 0 && n != o2 && ptdr(n, p, o2)) {
+                    l_line l2 = fd_ln_lp(lx2, n);
+                    if (l2 == null) {
+                        lx2 = cp_ln(lx2);
+                        lx2.type = 0;
+                        add_pt2l(n, lx2);
+                    } else
+                        lx2 = l2;
+                }
+            }
+        }
+        l_line ls[];
+
+
+        if (lx1 == null && lx2 == null) return null;
+        if (lx1 != null && lx2 != null) {
+            ls = new l_line[2];
+            ls[0] = lx1;
+            ls[1] = lx2;
+            return ls;
+        }
+        ls = new l_line[1];
+        if (lx1 != null)
+            ls[0] = lx1;
+        else if (lx2 != null)
+            ls[0] = lx2;
+        return ls;
+    }
+
     boolean on_ln(int p, int q, l_line ln) {
 
         int i, n;
@@ -4484,8 +4550,7 @@ public class gddbase extends gib {
     public l_line fd_ln1(int p1, int p2) {
         l_line ln = all_ln.nx;
         while (ln != null) {
-
-            if (on_ln(p1, p2, ln) && ln.no == 1)
+            if (on_ln(p1, p2, ln) && ln.no == 1)  // `ln.no == 1` means 2 points
                 return ln;
             ln = ln.nx;
         }

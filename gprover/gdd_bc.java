@@ -2382,12 +2382,12 @@ public class gdd_bc extends gdd_aux {
             p3 = l2.pt[0];
             p4 = l2.pt[1];
         }
+
         if (b != 0) {
             p6 = b;
             p7 = b;
             p5 = get_lpt1(l3, b);
             p8 = get_lpt1(l4, b);
-
         } else {
             p5 = l3.pt[0];
             p6 = l3.pt[1];

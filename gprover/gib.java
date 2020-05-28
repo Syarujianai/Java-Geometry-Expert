@@ -361,7 +361,7 @@ public class gib {
 
     protected static boolean ck_value = true;
 
-    protected static int P_STATUS = 0;
+    protected static int P_STATUS = 1;
     protected int tri_type;
     protected int d_base = 1;
     protected int show_dtype = 0;
@@ -1246,7 +1246,7 @@ public class gib {
             Cm.print("null point in eqangle");
             return false;
         }
-        return Math.abs(getAngleValue(p1, p2, p2, p3) - getAngleValue(p4, p5, p5, p6)) < ZERO_TRUE;
+        return Math.abs(getAngleValue(p1, p2, p2, p3) - getAngleValue(p4, p5, p5, p6)) < ZERO;
     }
 
     protected boolean check_atn(int p1, int p2, int p3, int p4, int p5, int p6) {
@@ -1267,7 +1267,7 @@ public class gib {
 
     protected boolean check_eqangle_t(int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8) {
         if (p1 == 0 || p2 == 0 || p3 == 0 || p4 == 0 || p5 == 0 || p6 == 0) {
-            Cm.print("Check EQANgle ==0");
+            Cm.print("Check EQANgle == 0");
             return false;
         }
 
