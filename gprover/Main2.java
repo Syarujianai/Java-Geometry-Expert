@@ -269,7 +269,7 @@ public class Main2 {
     }
 
     public static void main(String[] args) {
-        parse_and_prove_problem(21, 0);  // 21
+        parse_and_prove_problem(49, 0);  // 21
         //CMisc.print(Cm.s2077);
     }
 }

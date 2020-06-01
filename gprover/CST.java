@@ -120,8 +120,8 @@ public class CST {
             "RATIO",
             "S_ANGLE",
             "N_ANGLES",
-            "N_SEGMENTS"
-
+            "N_SEGMENTS",
+            "COMPL_ANGLE"
     };
 
     public static String[] s_conc_detail =

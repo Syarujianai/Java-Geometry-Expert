@@ -134,6 +134,7 @@ public class gib {
     final public static int CO_TANG = 67 + 20;
     final public static int CO_NANG = 68 + 20;
     final public static int CO_NSEG = 69 + 20;
+    final public static int CO_COMPL_ANGLE = 70 + 20;
 
     final public static int CO_ATNG = 1111;
     final public static int CO_EQ = 1112;

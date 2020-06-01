@@ -15,7 +15,7 @@ public class gdd_bc extends gdd_aux {
     auxpt axptc = null;
 
     public gdd_bc() {
-        P_STATUS = 0;
+        P_STATUS = 1;
         depth = 0;
         ck_value = true;
     }

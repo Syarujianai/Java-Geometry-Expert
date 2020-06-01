@@ -3448,7 +3448,9 @@ public class gddbase extends gib {
                 add_cong(0, 0, p[0], p[1], p[2], p[3]);
                 break;
             case C_SANGLE:
-                add_at(0, p[0], p[1], p[2], p[3] * A_TIME);
+                anglet at = add_at(0, p[0], p[1], p[2], p[3] * A_TIME);
+                if (at != null && at.v == A_90)
+                    add_tline(0, p[0], p[1], p[2], p[1]);
                 break;
             case C_LRATIO:
                 add_laratio(p[0], p[1], p[2], p[3], p[4], p[5]);
@@ -3532,6 +3534,9 @@ public class gddbase extends gib {
                 break;
             case CO_PBISECT:
                 add_cong(0, 0, p[0], p[1], p[0], p[2]);
+                break;
+            case CO_COMPL_ANGLE:
+                add_atn(0, p[0], p[1], p[2], p[3], p[4], p[5]);
                 break;
             default:
                 do_pred2(p, t, ptn);
@@ -5215,7 +5220,7 @@ public class gddbase extends gib {
     }
 
     public angtn add_atn(int lemma, l_line l1, l_line l2, l_line l3, l_line l4) {
-        // if (isPFull()) return null;
+        if (isPFull()) return null;
         if (!valid(R_AG_ATN)) return null;
         if (!valid(lemma)) return null;
 
