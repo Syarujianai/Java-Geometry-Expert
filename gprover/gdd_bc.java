@@ -432,8 +432,12 @@ public class gdd_bc extends gdd_aux {
                     l4 = as.l3;
                 }
                 cond c1 = add_as_pred_12(0, CO_ACONG, pr.p[0], pr.p[1], pr.p[2], pr.p[3], l3, l4, l1, l2);
-                cond c2 = add_pred_pntn(0, CO_PARA, pr.p[0], pr.p[1], l3, pr.p[2], pr.p[3], l4);
-                pr.addcond(R_AG_PP12, c1, c2);
+                if (!xcoll_ln(l3, l4)){
+                    cond c2 = add_pred_pntn(0, CO_PARA, pr.p[0], pr.p[1], l3, pr.p[2], pr.p[3], l4);
+                    pr.addcond(R_AG_PP12, c1, c2);
+                } else {
+                    pr.addcond(R_AG_PP12, c1);
+                }
             }
             break;
             case 166: {
@@ -450,9 +454,83 @@ public class gdd_bc extends gdd_aux {
                     l3 = as.l1;
                     l4 = as.l2;
                 }
+
                 cond c1 = add_as_pred_13(0, CO_ACONG, pr.p[0], pr.p[1], pr.p[2], pr.p[3], l2, l1, l4, l3);
-                cond c2 = add_pred_pntn(0, CO_PARA, pr.p[0], pr.p[1], l1, pr.p[2], pr.p[3], l3);
-                pr.addcond(R_AG_PP13, c1, c2);
+                if (!xcoll_ln(l1, l3)){
+                    l_line[] ls_ret = check_para_as_type(l1, l2, l3, l4);
+                    l1 = ls_ret[0];
+                    l2 = ls_ret[1];
+                    l3 = ls_ret[2];
+                    l4 = ls_ret[3];
+
+                    int para_as_type = 0;
+                    int p1 = inter_lls(l1, l4);
+                    int p2 = inter_lls(l3, l2);
+                    if (p1 != 0 || p2 != 0) para_as_type = 1;
+                    else para_as_type = 2;
+
+                    if (para_as_type == 1) {  // case 1
+                        if (p1 != 0) {
+                            l_line[] ls1 = split_ln(p1, l4);
+                            l_line[] ls2 = split_ln(p1, l1);
+                            for (int i = 0; i < ls1.length; i++)
+                                for (int j = 0; j < ls2.length; j++) {
+                                    double r = getAngleValue(get_lpt1(ls1[i], p1), p1, get_lpt1(ls2[j], p1)) * A_180 / Math.PI;
+                                    if (r < A_90 && r > -A_90) {
+                                        c1 = add_pred(0, CO_ACONG, l1.pt[0], l1.pt[1], l2.pt[0], l2.pt[1], ls2[j].pt[0], ls2[j].pt[1], ls1[i].pt[0], ls1[i].pt[1]);
+                                        add_as_raw_co(c1, as, l3, l4, ls2[j], ls1[i]);
+                                        break;
+                                    }
+                                }
+                        } else {
+                            l_line[] ls1 = split_ln(p2, l2);
+                            l_line[] ls2 = split_ln(p2, l3);
+                            for (int i = 0; i < ls1.length; i++)
+                                for (int j = 0; j < ls2.length; j++) {
+                                    double r = getAngleValue(get_lpt1(ls1[i], p2), p2, get_lpt1(ls2[j], p2)) * A_180 / Math.PI;
+                                    if (r < A_90 && r > -A_90) {
+                                        c1 = add_pred(0, CO_ACONG, l3.pt[0], l3.pt[1], l4.pt[0], l4.pt[1], ls2[j].pt[0], ls2[j].pt[1], ls1[i].pt[0], ls1[i].pt[1]);
+                                        add_as_raw_co(c1, as, l1, l2, ls2[j], ls1[i]);
+                                        break;
+                                    }
+                                }
+                        }
+                    } else if (para_as_type == 2) {  // case 2
+                        l_line l1_full = fd_ln(l1.pt[0], l1.pt[1]);
+                        l_line l3_full = fd_ln(l3.pt[0], l3.pt[1]);
+                        int p3 = inter_lls(l3_full, l2);
+                        int p4 = inter_lls(l1_full, l4);
+                        if (p3 != 0) {
+                            l_line[] ls1 = split_ln(p3, l3_full);
+                            l_line[] ls2 = split_ln(p3, l2);
+                            for (int i = 0; i < ls1.length; i++)
+                                for (int j = 0; j < ls2.length; j++) {
+                                    double r = getAngleValue(get_lpt1(ls1[i], p3), p3, get_lpt1(ls2[j], p3)) * A_180 / Math.PI;
+                                    if (r < A_90 && r > -A_90) {
+                                        c1 = add_pred(0, CO_ACONG, ls1[i].pt[0], ls1[i].pt[1], ls2[j].pt[0], ls2[j].pt[1], l3.pt[0], l3.pt[1], l4.pt[0], l4.pt[1]);
+                                        add_as_raw_co(c1, as, l1, l2, ls1[i], ls2[j]);
+                                        break;
+                                    }
+                                }
+                        } else if (p4 != 0) {
+                            l_line[] ls1 = split_ln(p4, l1_full);
+                            l_line[] ls2 = split_ln(p4, l4);
+                            for (int i = 0; i < ls1.length; i++)
+                                for (int j = 0; j < ls2.length; j++) {
+                                    double r = getAngleValue(get_lpt1(ls1[i], p4), p4, get_lpt1(ls2[j], p4)) * A_180 / Math.PI;
+                                    if (r < A_90 && r > -A_90) {
+                                        c1 = add_pred(0, CO_ACONG, l1.pt[0], l1.pt[1], l2.pt[0], l2.pt[1], ls1[i].pt[0], ls1[i].pt[1], ls2[j].pt[0], ls2[j].pt[1]);
+                                        add_as_raw_co(c1, as, l3, l4, ls1[i], ls2[j]);
+                                        break;
+                                    }
+                                }
+                        }
+                    }
+                    cond c2 = add_pred_pntn(0, CO_PARA, pr.p[0], pr.p[1], l1, pr.p[2], pr.p[3], l3);
+                    pr.addcond(R_AG_PP13, c1, c2);
+                } else {
+                    pr.addcond(R_AG_PP13, c1);
+                }
             }
             break;
             case R_P_COLL: {
@@ -2509,9 +2587,7 @@ public class gdd_bc extends gdd_aux {
 // m1,m2 on l1,  m3,m4 on l3;  find the most likely predicate
         int p1, p2, p3, p4, p5, p6, p7, p8;
         p2 = p3 = inter_lls(l1, l2);
-        if (p2 != 0)
-
-        {
+        if (p2 != 0) {
             if (m1 == p2)
                 p1 = m2;
             else if (m2 == p2)

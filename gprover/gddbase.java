@@ -4708,6 +4708,22 @@ public class gddbase extends gib {
         }
     }
 
+    void add_as_raw_co(cond c, angles as1, l_line l1, l_line l2, l_line l3, l_line l4) {
+        angles as2 = new angles();
+
+        as2.l1 = l1;
+        as2.l2 = l2;
+        as2.l3 = l3;
+        as2.l4 = l4;
+
+        co_xy.nx = null;
+        cond co = add_coxy(CO_ACONG);
+        co.u.as = as1;
+        co = add_coxy(CO_ACONG);
+        co.u.as = as2;
+        c.u.as.co = co;
+    }
+
     final void add_as_codb(l_line l1, l_line l2, l_line l3, l_line l4) {
         int p1, p2, p3, p4, p5, p6, p7, p8;
         int a = inter_ll(l1, l2);
@@ -5063,6 +5079,37 @@ public class gddbase extends gib {
         if (x < ZERO) return 0;
         if (Math.abs(x - A_180) < ZERO) return 1;
         return -1;
+    }
+
+    public l_line[] check_para_as_type(l_line l1, l_line l2, l_line l3, l_line l4) {
+        int pa = inter_lls(l1, l2);
+        int pb = inter_lls(l3, l4);
+
+        l_line[] ls_ret = new l_line[4];
+        l_line[] lsa1 = split_ln(pa, l1);
+        l_line[] lsa2 = split_ln(pa, l2);
+        l_line[] lsb1 = split_ln(pb, l3);
+        l_line[] lsb2 = split_ln(pb, l4);
+
+        for (int i = 0; i < lsa1.length; i++)
+            for (int j = 0; j < lsa2.length; j++) {
+                double r = getAngleValue(get_lpt1(lsa1[i], pa), pa, get_lpt1(lsa2[j], pa)) * A_180 / Math.PI;
+                if (r < A_90 && r > -A_90) {
+                    ls_ret[0] = lsa1[i];
+                    ls_ret[1] = lsa2[j];
+                    break;
+                }
+            }
+        for (int i = 0; i < lsb1.length; i++)
+            for (int j = 0; j < lsb2.length; j++) {
+                double r = getAngleValue(get_lpt1(lsb1[i], pb), pb, get_lpt1(lsb2[j], pb)) * A_180 / Math.PI;
+                if (r < A_90 && r > -A_90) {
+                    ls_ret[2] = lsb1[i];
+                    ls_ret[3] = lsb2[j];
+                    break;
+                }
+            }
+        return ls_ret;
     }
 
     public boolean check_at_eq(int t1, int t2) {

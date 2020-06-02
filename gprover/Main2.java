@@ -34,132 +34,132 @@ public class Main2 {
         if((pr.sd.contains("∥")) && (pr.u.pn != null) && (pr.u.pn.lemma == 166) && (pr.vlist.size() == 2))
             is_encounter_lemma = true;
 
-        if(is_encounter_lemma){
-            boolean is_reverse_order = false, is_variant_type = false, is_skip_para=false;
-
-            /* get a glimpse of conclusion (already to deduct) */
-            String[] type_patterns = pr.sd.split(" ∥ ");
-            // String type_pattern_rev = new StringBuffer(type_pattern).reverse().toString();
-
-            /* prepare initial string for resolve */
-            String vertex = "", angle_intermediate = "", angle_known = "";
-            StringBuilder another_builder = new StringBuilder();
-            String[] primitives_pn = new String[]{};
-            String[] primitives_an = new String[]{};
-
-            /* detect order and type, and store primitives */
-            for (int i = 0; i < pr.vlist.size(); i++) {
-                cond v = (cond) pr.vlist.get(i);
-
-                /* store omitted proof step of lemma */
-                if (v.sd.contains("∥")) {
-                    primitives_pn = v.sd.split(" ∥ ");
-                    if (i == 1) {
-                        is_reverse_order = true;
-                    }
-                } else if (v.sd.contains("∠")) {
-                    primitives_an = v.sd.split(" = ");
-                    angle_known = primitives_an[0];
-
-                    /* detect variant type */
-                    for (String p : primitives_an) {
-                        for (int j = 0; j< 2; j++){
-                            if(p.contains(type_patterns[j]) && j == 1)
-                                is_variant_type = true;
-                        }
-                    }
-                }
-            }
-
-            /* prepare components of proof steps */
-            if (is_variant_type) {
-                if (primitives_an[1].contains(primitives_pn[1])) {
-                    another_builder.append(primitives_an[1].substring(2, 4));
-                } else {
-                    another_builder.append(primitives_an[1].substring(3, 5));
-                }
-                another_builder.reverse();
-                vertex = primitives_an[0].substring(4, 5);
-            } else {
-                if (primitives_an[0].contains(primitives_pn[0])) {
-                    another_builder.append(primitives_an[0].substring(3, 5));
-                } else {
-                    another_builder.append(primitives_an[0].substring(2, 4));
-                }
-                vertex = primitives_an[1].substring(2, 3);
-            }
-            another_builder.append(vertex);
-            angle_intermediate = another_builder.toString();
-            another_builder.append("] = "+primitives_an[1]);  // DCB] = ∠[CDE]
-
-            if(is_reverse_order){
-                for (int i = pr.vlist.size()-1; i >= 0; i--){  // reverse
-                    cond v = (cond) pr.vlist.get(i);
-
-                    if (visited_pr_sd.containsKey(v.sd)){
-                        if(v.sd.contains("∥")){
-                            is_skip_para = true;
-                        }
-                        builder.append("又 ");
-                        continue;
-                    }
-
-                    if(count_append == 0){
-                        builder.append("∵ "+v.sd);
-
-                        if(is_skip_para){
-                            /* resolve proof step of lemma (after skipped parallel) */
-                            println_wrapper("∴ ∠["  + another_builder.toString(), outs, out_mode);
-
-                            println_wrapper(builder.toString(), outs, out_mode);  // angle
-                            builder.setLength(0);
-
-                            builder.append("∴ " + angle_known + " = " + "∠[" + angle_intermediate + "]");  // final angles relationship
-                        }else {
-                            println_wrapper(builder.toString(), outs, out_mode);  // parallel
-                            builder.setLength(0);
-
-                            /* resolve proof step of lemma (after parallel) */
-                            println_wrapper("∴ ∠["  + another_builder.toString(), outs, out_mode);
-                        }
-                    }else{
-                        if(count_append == 1){
-                            builder.append("又 ∵ "+v.sd+"\n");
-                            builder.append( "∴ " + angle_known + " = " + "∠[" + angle_intermediate + "]");  // final angles relationship
-                        } else{
-                            builder.append(", "+v.sd);
-                        }
-                    }
-                    count_append += 1;
-                }
-            }else{
-                for (int i = 0; i < pr.vlist.size(); i++) {
-                    cond v = (cond) pr.vlist.get(i);
-
-                    if (visited_pr_sd.containsKey(v.sd)){
-                        builder.append("又 ");
-                        continue;
-                    }
-
-                    if(count_append == 0){
-                        builder.append("∵ "+v.sd);
-                        /* resolve proof step of lemma */
-                        println_wrapper(builder.toString(), outs, out_mode);
-                        println_wrapper("∴ ∠["  + another_builder.toString(), outs, out_mode);
-                        builder.setLength(0);
-                    }else{
-                        if(count_append == 1){
-                            builder.append("又 ");
-                            builder.append("∵ "+v.sd+"\n");
-                            builder.append( "∴ " + angle_known + " = " + "∠[" + angle_intermediate + "]");
-                        } else{
-                            builder.append(", "+v.sd);
-                        }
-                    }
-                    count_append += 1;
-                }
-            }
-        }else{
+//        if(is_encounter_lemma){
+//            boolean is_reverse_order = false, is_variant_type = false, is_skip_para=false;
+//
+//            /* get a glimpse of conclusion (already to deduct) */
+//            String[] type_patterns = pr.sd.split(" ∥ ");
+//            // String type_pattern_rev = new StringBuffer(type_pattern).reverse().toString();
+//
+//            /* prepare initial string for resolve */
+//            String vertex = "", angle_intermediate = "", angle_known = "";
+//            StringBuilder another_builder = new StringBuilder();
+//            String[] primitives_pn = new String[]{};
+//            String[] primitives_an = new String[]{};
+//
+//            /* detect order and type, and store primitives */
+//            for (int i = 0; i < pr.vlist.size(); i++) {
+//                cond v = (cond) pr.vlist.get(i);
+//
+//                /* store omitted proof step of lemma */
+//                if (v.sd.contains("∥")) {
+//                    primitives_pn = v.sd.split(" ∥ ");
+//                    if (i == 1) {
+//                        is_reverse_order = true;
+//                    }
+//                } else if (v.sd.contains("∠")) {
+//                    primitives_an = v.sd.split(" = ");
+//                    angle_known = primitives_an[0];
+//
+//                    /* detect variant type */
+//                    for (String p : primitives_an) {
+//                        for (int j = 0; j< 2; j++){
+//                            if(p.contains(type_patterns[j]) && j == 1)
+//                                is_variant_type = true;
+//                        }
+//                    }
+//                }
+//            }
+//
+//            /* prepare components of proof steps */
+//            if (is_variant_type) {
+//                if (primitives_an[1].contains(primitives_pn[1])) {
+//                    another_builder.append(primitives_an[1].substring(2, 4));
+//                } else {
+//                    another_builder.append(primitives_an[1].substring(3, 5));
+//                }
+//                another_builder.reverse();
+//                vertex = primitives_an[0].substring(4, 5);
+//            } else {
+//                if (primitives_an[0].contains(primitives_pn[0])) {
+//                    another_builder.append(primitives_an[0].substring(3, 5));
+//                } else {
+//                    another_builder.append(primitives_an[0].substring(2, 4));
+//                }
+//                vertex = primitives_an[1].substring(2, 3);
+//            }
+//            another_builder.append(vertex);
+//            angle_intermediate = another_builder.toString();
+//            another_builder.append("] = "+primitives_an[1]);  // DCB] = ∠[CDE]
+//
+//            if(is_reverse_order){
+//                for (int i = pr.vlist.size()-1; i >= 0; i--){  // reverse
+//                    cond v = (cond) pr.vlist.get(i);
+//
+//                    if (visited_pr_sd.containsKey(v.sd)){
+//                        if(v.sd.contains("∥")){
+//                            is_skip_para = true;
+//                        }
+//                        builder.append("又 ");
+//                        continue;
+//                    }
+//
+//                    if(count_append == 0){
+//                        builder.append("∵ "+v.sd);
+//
+//                        if(is_skip_para){
+//                            /* resolve proof step of lemma (after skipped parallel) */
+//                            println_wrapper("∴ ∠["  + another_builder.toString(), outs, out_mode);
+//
+//                            println_wrapper(builder.toString(), outs, out_mode);  // angle
+//                            builder.setLength(0);
+//
+//                            builder.append("∴ " + angle_known + " = " + "∠[" + angle_intermediate + "]");  // final angles relationship
+//                        }else {
+//                            println_wrapper(builder.toString(), outs, out_mode);  // parallel
+//                            builder.setLength(0);
+//
+//                            /* resolve proof step of lemma (after parallel) */
+//                            println_wrapper("∴ ∠["  + another_builder.toString(), outs, out_mode);
+//                        }
+//                    }else{
+//                        if(count_append == 1){
+//                            builder.append("又 ∵ "+v.sd+"\n");
+//                            builder.append( "∴ " + angle_known + " = " + "∠[" + angle_intermediate + "]");  // final angles relationship
+//                        } else{
+//                            builder.append(", "+v.sd);
+//                        }
+//                    }
+//                    count_append += 1;
+//                }
+//            }else{
+//                for (int i = 0; i < pr.vlist.size(); i++) {
+//                    cond v = (cond) pr.vlist.get(i);
+//
+//                    if (visited_pr_sd.containsKey(v.sd)){
+//                        builder.append("又 ");
+//                        continue;
+//                    }
+//
+//                    if(count_append == 0){
+//                        builder.append("∵ "+v.sd);
+//                        /* resolve proof step of lemma */
+//                        println_wrapper(builder.toString(), outs, out_mode);
+//                        println_wrapper("∴ ∠["  + another_builder.toString(), outs, out_mode);
+//                        builder.setLength(0);
+//                    }else{
+//                        if(count_append == 1){
+//                            builder.append("又 ");
+//                            builder.append("∵ "+v.sd+"\n");
+//                            builder.append( "∴ " + angle_known + " = " + "∠[" + angle_intermediate + "]");
+//                        } else{
+//                            builder.append(", "+v.sd);
+//                        }
+//                    }
+//                    count_append += 1;
+//                }
+//            }
+//        }else{
             for (int i = 0; i < pr.vlist.size(); i++) {
                 cond v = (cond) pr.vlist.get(i);
 
@@ -175,7 +175,7 @@ public class Main2 {
                 }
                 count_append += 1;
             }
-        }
+        // }
 
         if(count_append != 0){
             String pr_v  = builder.toString();
@@ -269,7 +269,7 @@ public class Main2 {
     }
 
     public static void main(String[] args) {
-        parse_and_prove_problem(49, 0);  // 21
+        parse_and_prove_problem(1, 0);  // 21
         //CMisc.print(Cm.s2077);
     }
 }
