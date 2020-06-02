@@ -157,7 +157,6 @@ public class gdd_bc extends gdd_aux {
             if (p1 == p3 && p2 == p4 || p1 == p4 && p2 == p3) return null;
         }
 
-
         cond pr3 = fd_pred(tm_pr1);
         if (pr3 != null) {
         } else {
@@ -171,7 +170,6 @@ public class gdd_bc extends gdd_aux {
             }
         }
         return pr3;
-
     }
 
     int finter_ll(l_line l1, l_line l2) {
@@ -526,8 +524,10 @@ public class gdd_bc extends gdd_aux {
                                 }
                         }
                     }
-                    cond c2 = add_pred_pntn(0, CO_PARA, pr.p[0], pr.p[1], l1, pr.p[2], pr.p[3], l3);
-                    pr.addcond(R_AG_PP13, c1, c2);
+                    // HACK: alternate angles from lemma 2 directly (from another parallel lines)
+                    // cond c2 = add_pred_pntn(0, CO_PARA, pr.p[0], pr.p[1], l1, pr.p[2], pr.p[3], l3);
+                    // pr.addcond(R_AG_PP13, c1, c2);
+                    pr.addcond(R_AG_PP13, c1);
                 } else {
                     pr.addcond(R_AG_PP13, c1);
                 }
