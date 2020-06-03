@@ -122,7 +122,6 @@ public class gdd_bc extends gdd_aux {
         return (null);
     }
 
-
     cond add_pred(int m, int n, int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8) {
         tm_pr1.u.setnull();
         tm_pr1.pred = n;
@@ -158,8 +157,7 @@ public class gdd_bc extends gdd_aux {
         }
 
         cond pr3 = fd_pred(tm_pr1);
-        if (pr3 != null) {
-        } else {
+        if (pr3 == null) {
             do_pred(tm_pr1);
             if (PCO((tm_pr1)) == null) {
                 gprint(Cm.s2070);
@@ -168,6 +166,30 @@ public class gdd_bc extends gdd_aux {
                 cp_pred(tm_pr1);
                 pr3 = last_nd;
             }
+        }
+        return pr3;
+    }
+
+    cond add_raw_pred(int m, int n, int p1, int p2, int p3, int p4, int p5, int p6, int p7, int p8) {
+        assert n == CO_ACONG;
+
+        tm_pr1.u.setnull();
+        tm_pr1.pred = n;
+        tm_pr1.no = 0;
+        tm_pr1.u.ln = null;
+        tm_pr1.p[0] = p1;
+        tm_pr1.p[1] = p2;
+        tm_pr1.p[2] = p3;
+        tm_pr1.p[3] = p4;
+        tm_pr1.p[4] = p5;
+        tm_pr1.p[5] = p6;
+        tm_pr1.p[6] = p7;
+        tm_pr1.p[7] = p8;
+
+        cond pr3 = fd_pred(tm_pr1);
+        if (pr3 == null) {
+            cp_pred(tm_pr1);
+            pr3 = last_nd;
         }
         return pr3;
     }
@@ -475,8 +497,8 @@ public class gdd_bc extends gdd_aux {
                                 for (int j = 0; j < ls2.length; j++) {
                                     double r = getAngleValue(get_lpt1(ls1[i], p1), p1, get_lpt1(ls2[j], p1)) * A_180 / Math.PI;
                                     if (r < A_90 && r > -A_90) {
-                                        c1 = add_pred(0, CO_ACONG, l1.pt[0], l1.pt[1], l2.pt[0], l2.pt[1], ls2[j].pt[0], ls2[j].pt[1], ls1[i].pt[0], ls1[i].pt[1]);
-                                        add_as_raw_co(c1, as, l3, l4, ls2[j], ls1[i]);
+                                        c1 = add_raw_pred(0, CO_ACONG, l1.pt[0], l1.pt[1], l2.pt[0], l2.pt[1], ls2[j].pt[0], ls2[j].pt[1], ls1[i].pt[0], ls1[i].pt[1]);
+                                        add_co_to_pred_as(c1, as, l3, l4, ls2[j], ls1[i]);
                                         break;
                                     }
                                 }
@@ -487,8 +509,8 @@ public class gdd_bc extends gdd_aux {
                                 for (int j = 0; j < ls2.length; j++) {
                                     double r = getAngleValue(get_lpt1(ls1[i], p2), p2, get_lpt1(ls2[j], p2)) * A_180 / Math.PI;
                                     if (r < A_90 && r > -A_90) {
-                                        c1 = add_pred(0, CO_ACONG, l3.pt[0], l3.pt[1], l4.pt[0], l4.pt[1], ls2[j].pt[0], ls2[j].pt[1], ls1[i].pt[0], ls1[i].pt[1]);
-                                        add_as_raw_co(c1, as, l1, l2, ls2[j], ls1[i]);
+                                        c1 = add_raw_pred(0, CO_ACONG, l3.pt[0], l3.pt[1], l4.pt[0], l4.pt[1], ls2[j].pt[0], ls2[j].pt[1], ls1[i].pt[0], ls1[i].pt[1]);
+                                        add_co_to_pred_as(c1, as, l1, l2, ls2[j], ls1[i]);
                                         break;
                                     }
                                 }
@@ -505,8 +527,8 @@ public class gdd_bc extends gdd_aux {
                                 for (int j = 0; j < ls2.length; j++) {
                                     double r = getAngleValue(get_lpt1(ls1[i], p3), p3, get_lpt1(ls2[j], p3)) * A_180 / Math.PI;
                                     if (r < A_90 && r > -A_90) {
-                                        c1 = add_pred(0, CO_ACONG, ls1[i].pt[0], ls1[i].pt[1], ls2[j].pt[0], ls2[j].pt[1], l3.pt[0], l3.pt[1], l4.pt[0], l4.pt[1]);
-                                        add_as_raw_co(c1, as, l1, l2, ls1[i], ls2[j]);
+                                        c1 = add_raw_pred(0, CO_ACONG, ls1[i].pt[0], ls1[i].pt[1], ls2[j].pt[0], ls2[j].pt[1], l3.pt[0], l3.pt[1], l4.pt[0], l4.pt[1]);
+                                        add_co_to_pred_as(c1, as, l1, l2, ls1[i], ls2[j]);
                                         break;
                                     }
                                 }
@@ -517,8 +539,8 @@ public class gdd_bc extends gdd_aux {
                                 for (int j = 0; j < ls2.length; j++) {
                                     double r = getAngleValue(get_lpt1(ls1[i], p4), p4, get_lpt1(ls2[j], p4)) * A_180 / Math.PI;
                                     if (r < A_90 && r > -A_90) {
-                                        c1 = add_pred(0, CO_ACONG, l1.pt[0], l1.pt[1], l2.pt[0], l2.pt[1], ls1[i].pt[0], ls1[i].pt[1], ls2[j].pt[0], ls2[j].pt[1]);
-                                        add_as_raw_co(c1, as, l3, l4, ls1[i], ls2[j]);
+                                        c1 = add_raw_pred(0, CO_ACONG, l1.pt[0], l1.pt[1], l2.pt[0], l2.pt[1], ls1[i].pt[0], ls1[i].pt[1], ls2[j].pt[0], ls2[j].pt[1]);
+                                        add_co_to_pred_as(c1, as, l3, l4, ls1[i], ls2[j]);
                                         break;
                                     }
                                 }
@@ -1047,8 +1069,40 @@ public class gdd_bc extends gdd_aux {
             break;
             default: {
                 if (as1 != null && as2 != null) {
-                    if (isPFull())
-                        add_as82(pr, as1, as2);
+                    // if (isPFull()) add_as82(pr, as1, as2);
+                    l_line[] lns = null;
+                    lns = geti81(pr.p[0], pr.p[1], pr.p[2], pr.p[3], as1);
+                    if (lns != null) {
+                        l1 = lns[0];
+                        l2 = lns[1];
+                    }
+                    if (l1 == null || l2 == null) {
+                        lns = geti81(pr.p[0], pr.p[1], pr.p[2], pr.p[3], as2);
+                        if (lns != null) {
+                            l1 = lns[0];
+                            l2 = lns[1];
+                        }
+                        lns = geti81(pr.p[4], pr.p[5], pr.p[6], pr.p[7], as1);
+                        if (lns != null) {
+                            l3 = lns[0];
+                            l4 = lns[1];
+                        }
+                    } else {
+                        lns = geti81(pr.p[4], pr.p[5], pr.p[6], pr.p[7], as2);
+                        if (lns != null) {
+                            l3 = lns[0];
+                            l4 = lns[1];
+                        }
+                    }
+                    if (l1 == null || l2 == null || l3 == null || l4 == null) {
+                        cond co1 = add_pred(1, CO_ACONG, pr.p[0], pr.p[1], pr.p[4], pr.p[5], pr.p[2], pr.p[3], pr.p[6], pr.p[7]);
+                        pr.addcond(co1);
+                    } else {
+                        cond co1 = add_as_pred1(0, CO_ACONG, pr.p[0], pr.p[1], pr.p[2], pr.p[3], l1, l2);
+                        cond co2 = add_as_pred1(0, CO_ACONG, pr.p[4], pr.p[5], pr.p[6], pr.p[7], l3, l4);
+                        pr.addcond(co1, co2);
+                    }
+
                 } else {
                     l_line ls = pr1.u.ln;
                     angles as = pr2.u.as;

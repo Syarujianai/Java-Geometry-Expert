@@ -4708,7 +4708,7 @@ public class gddbase extends gib {
         }
     }
 
-    void add_as_raw_co(cond c, angles as1, l_line l1, l_line l2, l_line l3, l_line l4) {
+    void add_co_to_pred_as(cond c, angles as1, l_line l1, l_line l2, l_line l3, l_line l4) {
         angles as2 = new angles();
 
         as2.l1 = l1;
@@ -4721,6 +4721,8 @@ public class gddbase extends gib {
         co.u.as = as1;
         co = add_coxy(CO_ACONG);
         co.u.as = as2;
+
+        c.u.as = new angles();
         c.u.as.co = co;
     }
 
