@@ -11,6 +11,7 @@ import javax.swing.*;
 import java.io.*;
 import java.nio.Buffer;
 import java.util.Hashtable;
+import java.util.Vector;
 
 
 public class Main2 {
@@ -30,10 +31,10 @@ public class Main2 {
         /* visualize proof */
         int count_append = 0, count_skip = 0;
         StringBuilder builder = new StringBuilder();
-        boolean is_encounter_lemma = false;
-        if((pr.sd.contains("∥")) && (pr.u.pn != null) && (pr.u.pn.lemma == 166) && (pr.vlist.size() == 2))
-            is_encounter_lemma = true;
-
+//        boolean is_encounter_lemma = false;
+//        if((pr.sd.contains("∥")) && (pr.u.pn != null) && (pr.u.pn.lemma == 166) && (pr.vlist.size() == 2))
+//            is_encounter_lemma = true;
+//
 //        if(is_encounter_lemma){
 //            boolean is_reverse_order = false, is_variant_type = false, is_skip_para=false;
 //
@@ -263,13 +264,27 @@ public class Main2 {
             Hashtable<String, Integer> visited_pr_sd = new Hashtable<String, Integer>();
             visualize_proof(pr_head, visited_pr_sd, out_mode, outs);
         } catch (IOException ee) {
+            ee.printStackTrace();
         }
 
         return outs.toString();
     }
 
     public static void main(String[] args) {
-        parse_and_prove_problem(21, 0);  // 21
+        int[] problem_ids = new int[] {
+             1, 3, 6, 8, 12, 19, 21, 28, 29, 33, 34, 35, 36, 49
+        };
+
+        for (int i = 0; i< problem_ids.length; i++) {
+            try{
+                System.out.printf("id: %d \n", problem_ids[i]);
+                parse_and_prove_problem(problem_ids[i], 0);
+                System.out.println();
+            } catch (NullPointerException ee) {
+                ee.printStackTrace();
+                continue;
+            }
+        }
         //CMisc.print(Cm.s2077);
     }
 }
