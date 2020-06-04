@@ -277,6 +277,7 @@ public class Main2 {
 
         for (int i = 0; i< problem_ids.length; i++) {
             try{
+                if (problem_ids[i] != 19) continue;
                 System.out.printf("id: %d \n", problem_ids[i]);
                 parse_and_prove_problem(problem_ids[i], 0);
                 System.out.println();

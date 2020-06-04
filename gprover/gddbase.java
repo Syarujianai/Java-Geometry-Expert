@@ -482,7 +482,8 @@ public class gddbase extends gib {
     final boolean ln_para(l_line l1, l_line l2) {
         p_line pn;
         if (l1 == l2) return (true);
-        if ((l1.type == 0 || l2.type == 0) && xcoll_ln(l1, l2)) return true;
+        // if ((l1.type == 0 || l2.type == 0) && xcoll_ln(l1, l2)) return true;
+        if(xcoll_ln(l1, l2)) return true;
         if (l1.type == 0)
             l1 = fd_lnl(l1);
         if (l2.type == 0)
@@ -2264,7 +2265,7 @@ public class gddbase extends gib {
 
     final void ck_as(angles as, l_line l1, l_line l2, l_line l3, l_line l4) {
         co_xy.nx = null;
-        if (ln_para(l1, l2) && l3 != l4) {
+        if (ln_para(l1, l2) && check_para(l3, l4)) {  // && l3 != l4
             as.type = 0;
             p_line pn = add_px(165, l3, l4);
             if (pn != null) {
@@ -2276,7 +2277,7 @@ public class gddbase extends gib {
             if (tn != null) {
                 tn.co = add_acoxy(new angles(l1, l2, l3, l4));
             }
-        } else if (ln_para(l1, l3) && l2 != l4) {
+        } else if (ln_para(l1, l3) && check_para(l2, l4)) {  // && l2 != l4
             p_line pn = add_px(166, l2, l4);
             if (pn != null) {
                 pn.co = add_acoxy(new angles(l1, l2, l3, l4));

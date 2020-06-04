@@ -476,7 +476,8 @@ public class gdd_bc extends gdd_aux {
                 }
 
                 cond c1 = add_as_pred_13(0, CO_ACONG, pr.p[0], pr.p[1], pr.p[2], pr.p[3], l2, l1, l4, l3);
-                if (!xcoll_ln(l1, l3)){
+                cond c2 = new cond();
+                if (!xcoll_ln(l1, l3)) {
                     l_line[] ls_ret = check_para_as_type(l1, l2, l3, l4);
                     l1 = ls_ret[0];
                     l2 = ls_ret[1];
@@ -486,8 +487,12 @@ public class gdd_bc extends gdd_aux {
                     int para_as_type = 0;
                     int p1 = inter_lls(l1, l4);
                     int p2 = inter_lls(l3, l2);
-                    if (p1 != 0 || p2 != 0) para_as_type = 1;
-                    else para_as_type = 2;
+                    if (p1 != 0 || p2 != 0)
+                        para_as_type = 1;
+                    else if (p1 != 0 && p2!=0)
+                        para_as_type = 3;
+                    else
+                        para_as_type = 2;
 
                     if (para_as_type == 1) {  // case 1
                         if (p1 != 0) {
@@ -545,11 +550,16 @@ public class gdd_bc extends gdd_aux {
                                     }
                                 }
                         }
+                    } else if (para_as_type == 3) {
+                        // TODO: add parallelogram tag
+                        c2 = add_pred_pntn(0, CO_PARA, pr.p[0], pr.p[1], l1, pr.p[2], pr.p[3], l3);
                     }
                     // HACK: alternate angles from lemma 2 directly (from another parallel lines)
                     // cond c2 = add_pred_pntn(0, CO_PARA, pr.p[0], pr.p[1], l1, pr.p[2], pr.p[3], l3);
                     // pr.addcond(R_AG_PP13, c1, c2);
-                    pr.addcond(R_AG_PP13, c1);
+                }
+                if (c2.p[0] != 0) {
+                    pr.addcond(R_AG_PP13, c1, c2);
                 } else {
                     pr.addcond(R_AG_PP13, c1);
                 }
