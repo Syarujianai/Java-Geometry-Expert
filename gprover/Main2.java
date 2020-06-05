@@ -192,8 +192,12 @@ public class Main2 {
 
         builder.setLength(0);
         builder.append("∴ "+pr.sd);
-        if(pr.rule == 31)
-            builder.append(" (ASA)");
+        switch (pr.rule) {
+            case gib.R_AA_STRI:
+                builder.append(" (ASA)");
+            case gib.R_PARALLELOGRAM:
+                builder.append(" (parallelgram)");
+        }
         println_wrapper(builder.toString(), outs, out_mode);
     }
 
@@ -277,7 +281,7 @@ public class Main2 {
 
         for (int i = 0; i< problem_ids.length; i++) {
             try{
-                if (problem_ids[i] != 19) continue;
+                if (problem_ids[i] != 3) continue;
                 System.out.printf("id: %d \n", problem_ids[i]);
                 parse_and_prove_problem(problem_ids[i], 0);
                 System.out.println();

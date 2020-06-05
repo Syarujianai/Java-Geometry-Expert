@@ -117,8 +117,8 @@ public class cond {
     }
 
     public void addcond(int lm, cond co1, cond co2) {
-        rule = lm;
         addcond(co1, co2);
+        rule = lm;
     }
 
     public void addcond(cond co1, cond co2) {
