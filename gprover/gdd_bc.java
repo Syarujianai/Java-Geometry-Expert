@@ -262,14 +262,14 @@ public class gdd_bc extends gdd_aux {
                     if ((pr3 = fd_pred(pr1)) != null) {
                         pr.addcond(pr3);
                     } else {
-                        do_pred(pr1);  // update pr1.ustruct
+                        do_pred(pr1);  // update pr1.u
 //                        if (pr_coll) {
 //                            if (!add_pr_coll(pr, pr1))
 //                                continue;
 //                        }
-                        if (pr1.u.isnull()) { //obvious
+                        if (pr1.u.isnull()) { // obvious
                             pr.addcond(pr1);
-                        } else if (PCO(pr1) == null) { //hyp
+                        } else if (PCO(pr1) == null) { // hyp: pr1.u == null
                             pr.addcond(pr1);
                         } else {
                             cp_pred(pr1);
