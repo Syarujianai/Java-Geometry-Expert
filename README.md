@@ -221,7 +221,7 @@
 
       | 题目                                 | 题图                                                         |
       | ------------------------------------ | ------------------------------------------------------------ |
-      | ![example1](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/md_figures/example1.png) | <img src="https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/Junior Mathematics/example_1.JPG" alt="example_1" style="zoom:75%;" /> |
+      | ![example1](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/md_figures/example1.png) | <img src="https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/Junior%20Mathematics/example_1.JPG" alt="example_1" style="zoom:75%;" /> |
 
       > `db.sbase()`: 初始化`Prover.db.all_nd`为输入hypothesis
 
@@ -773,7 +773,7 @@
   -> CD∥GF
   ```
 
-![example_1](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/Junior Mathematics/example_1.JPG)
+![example_1](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/Junior%20Mathematics/example_1.JPG)
 
 - para_as_type 2（`NOTE`:下例中CE、CD与AB、BF间仅有一交点时才成立）:  
 
@@ -785,7 +785,7 @@
   -> AB ∥ CD
   ```
 
-  ![example_3](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/Junior Mathematics/example_3.JPG)
+  ![example_3](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/Junior%20Mathematics/example_3.JPG)
 
 ### 平行四边形定理
 
@@ -863,7 +863,7 @@ A(147.670157068+7,39.2879581152-24) B(27.2287234043+7,212.090425532-24) C(260.92
 
 - 以example21为例，垂直+等角的组合推导出另一组等角，但条件`∠[EGA] = ∠[ABE] + ∠[BEG]`由三角形外角定理推出，需要在`add_pred_as()`中定义这种pattern然后更改和添加所需的conditions
 
-  ![example_21](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/Junior Mathematics/example_21.JPG)
+  ![example_21](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/Junior%20Mathematics/example_21.JPG)
 
   ![result_21](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/md_figures/result_21.PNG)
 
