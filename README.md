@@ -1,5 +1,4 @@
-[original repo]: https://github.com/yezheng1981/Java-Geometry-Expert
-
+[original repo](https://github.com/yezheng1981/Java-Geometry-Expert)
 
 
 ## Quick Start
@@ -222,7 +221,7 @@
 
       | 题目                                 | 题图                                                         |
       | ------------------------------------ | ------------------------------------------------------------ |
-      | ![example1](md_figures\example1.png) | <img src="Junior Mathematics\example_1.JPG" alt="example_1" style="zoom:75%;" /> |
+      | ![example1](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/md_figures/example1.png) | <img src="https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/Junior Mathematics/example_1.JPG" alt="example_1" style="zoom:75%;" /> |
 
       > `db.sbase()`: 初始化`Prover.db.all_nd`为输入hypothesis
 
@@ -407,7 +406,7 @@
 
   由于geosolver会错误地将角标的弧线检测为圆，导至出现错误的交点 (`intersection_points`)，因而需要调整圆的检测阈值 
 
-  ![error circle](md_figures\error circle.PNG)
+  ![error circle](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/md_figures/error circle.PNG)
 
   ```
   /* parameter.py */
@@ -426,11 +425,11 @@
   - geosolver的坐标点提取是通过segments的求交点得到的，因而坐标精度取决于segments检测的准确度，因而repo中也实现了基于haris角点检测的精确坐标提取，在完成符号模板匹配后用haris角点进行重匹配
   - 使用haris角点检测进行坐标提取需要在调用`GeometryImageParser.parse_image()`时设置`use_haris_centroids=True`
 
-  ![corner1](\geosolver-master\corner1.png)
+  ![corner1](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/geosolver-master/corner1.png)
 
-  ![corner2](\geosolver-master\corner2.png)
+  ![corner2](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/geosolver-master/corner2.png)
 
-  ![corner3](geosolver-master\image.png)
+  ![corner3](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/geosolver-master/image.png)
 
   
 
@@ -774,7 +773,7 @@
   -> CD∥GF
   ```
 
-![example_1](Junior Mathematics\example_1.JPG)
+![example_1](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/Junior Mathematics/example_1.JPG)
 
 - para_as_type 2（`NOTE`:下例中CE、CD与AB、BF间仅有一交点时才成立）:  
 
@@ -786,7 +785,7 @@
   -> AB ∥ CD
   ```
 
-  ![example_3](Junior Mathematics\example_3.JPG)
+  ![example_3](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/Junior Mathematics/example_3.JPG)
 
 ### 平行四边形定理
 
@@ -800,7 +799,7 @@
   -> AD∥ BC
   ```
 
-  ![example_19](\Junior Mathematics\example_19.JPG)
+  ![example_19](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/Junior Mathematics/example_19.JPG)
 
 
 
@@ -812,11 +811,11 @@
 
   - 以lemma166为例，若l1/l2重合但边的顺序不同会导致错误的平行推理
 
-    ![correctness_explain1](md_figures\correctness_explain1.png)
+    ![correctness_explain1](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/md_figures/correctness_explain1.png)
 
   - 以lemma145为例，若l1/l2垂直但边的顺序不同会导致错误的垂直推理
 
-    ![correctness_explain2](md_figures\correctness_explain2.png)
+    ![correctness_explain2](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/md_figures/correctness_explain2.png)
 
 
 
@@ -864,9 +863,9 @@ A(147.670157068+7,39.2879581152-24) B(27.2287234043+7,212.090425532-24) C(260.92
 
 - 以example21为例，垂直+等角的组合推导出另一组等角，但条件`∠[EGA] = ∠[ABE] + ∠[BEG]`由三角形外角定理推出，需要在`add_pred_as()`中定义这种pattern然后更改和添加所需的conditions
 
-  ![example_21](Junior Mathematics\example_21.JPG)
+  ![example_21](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/Junior Mathematics/example_21.JPG)
 
-  ![result_21](md_figures\result_21.PNG)
+  ![result_21](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/md_figures/result_21.PNG)
 
 - 尺规作图parser，即从文本和图像得到尺规作图的program：
 
@@ -888,7 +887,7 @@ A(147.670157068+7,39.2879581152-24) B(27.2287234043+7,212.090425532-24) C(260.92
 
 - `parse_core`在可视化角时会显示外角
 
-  ![visualize_error](md_figures\visualize_error.PNG)
+  ![visualize_error](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/md_figures/visualize_error.PNG)
 
 - 题图分辨率过低时会匹配不到部分字母：不要使用截图）
 
