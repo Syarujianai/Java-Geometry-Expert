@@ -799,7 +799,7 @@
   -> AD∥ BC
   ```
 
-  ![example_19](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/Junior Mathematics/example_19.JPG)
+  ![example_19](https://github.com/Syarujianai/Java-Geometry-Expert/raw/master/Junior%20Mathematics/example_19.JPG)
 
 
 
